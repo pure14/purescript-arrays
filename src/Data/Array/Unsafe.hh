@@ -21,7 +21,7 @@ namespace Data_Array_Unsafe {
   using namespace PureScript;
 
   template <typename A>
-  inline auto unsafeIndex(list<A> xs) {
+  inline auto unsafeIndex(array<A> xs) {
     return [=](int n) {
       return xs[n];
     };

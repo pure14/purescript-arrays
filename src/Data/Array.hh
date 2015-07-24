@@ -21,29 +21,29 @@ namespace Data_Array {
   using namespace PureScript;
 
   // STUB!!!
-  inline auto range(int start) -> fn<int,list<int>> {
+  inline auto range(int start) -> fn<int,array<int>> {
     return [=](int end){
-      return list<int>();
+      return array<int>();
     };
   }
 
   template <typename A>
-  inline auto length(list<A> l) {
+  inline auto length(array<A> l) {
     return l.size();
   }
 
   template <typename A>
-  inline auto cons(A a) -> fn<list<A>, list<A>> {
-    return [=](list<A> l) {
-      return list<A>(a,l);
+  inline auto cons(A a) -> fn<array<A>, array<A>> {
+    return [=](array<A> l) {
+      return array<A>(a,l);
     };
   }
 
   // STUB!!!
   template <typename A, typename B>
   inline auto uncons_prime_(fn<Prelude::Unit,B> empty) {
-    return [=](fn<A,fn<list<A>,B>> next) {
-      return [=](list<A> xs) {
+    return [=](fn<A,fn<array<A>,B>> next) {
+      return [=](array<A> xs) {
         return empty();
       };
     };
@@ -57,7 +57,7 @@ namespace Data_Array {
   template <typename A>
   const auto indexImpl = [](auto just) {
     return [=](auto nothing) {
-      return [=](list<A> xs) {
+      return [=](array<A> xs) {
         return [=](int i) {
           return i < 0 || i >= xs.size() ? nothing(typeval<A>) : just(typeval<A>)(xs[i]);
         };
@@ -120,23 +120,23 @@ namespace Data_Array {
   template <typename A>
   inline auto _deleteAt(int i) {
     return [=](int n) {
-      return [=](list<A> l) {
-        return list<A>();
+      return [=](array<A> l) {
+        return array<A>();
       };
     };
   }
 
   // STUB!!!
   template <typename A>
-  inline auto reverse(list<A> l) {
-    return list<A>();
+  inline auto reverse(array<A> l) {
+    return array<A>();
   }
 
   // STUB!!!
   template <typename A>
   inline auto filter(fn<A,bool> f) {
-    return [=](list<A> xs) {
-      return list<A>();
+    return [=](array<A> xs) {
+      return array<A>();
     };
   }
 
@@ -144,8 +144,8 @@ namespace Data_Array {
   template <typename A>
   inline auto slice(int s) {
     return [=](int e) {
-      return [=](list<A> l) {
-        return list<A>();
+      return [=](array<A> l) {
+        return array<A>();
       };
     };
   }
@@ -153,17 +153,17 @@ namespace Data_Array {
   // STUB!!!
   template <typename A>
   inline auto sortImpl(fn<A,fn<A,int>> f) {
-    return [=](list<A> l) {
-      return list<A>();
+    return [=](array<A> l) {
+      return array<A>();
     };
   }
 
   // STUB!!!
   template <typename A, typename B, typename C>
   inline auto zipWith(fn<A,fn<B,C>> f)  {
-    return [=](list<A> xs) {
-      return [=](list<B> ys) {
-        return list<C>();
+    return [=](array<A> xs) {
+      return [=](array<B> ys) {
+        return array<C>();
       };
     };
   }

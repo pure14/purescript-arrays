@@ -48,7 +48,7 @@ namespace Data_Array_ST {
   //
   template <typename A, typename H>
   inline auto pushAllSTArray(STArray<H,A> xs) {
-    return [=](list<A> as) {
+    return [=](array<A> as) {
       return [=]() -> int {
         xs.insert(xs.end(), as.begin(), as.end());
         return xs.size();
