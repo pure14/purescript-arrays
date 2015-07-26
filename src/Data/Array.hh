@@ -21,29 +21,29 @@ namespace Data_Array {
   using namespace PureScript;
 
   // STUB!!!
-  inline auto range(int start) -> fn<int,array<int>> {
-    return [=](int end){
+  inline auto range(const int start) -> fn<int,array<int>> {
+    return [=](const int end){
       return array<int>();
     };
   }
 
   template <typename A>
-  inline auto length(array<A> l) {
+  inline auto length(const array<A>& l) {
     return l.size();
   }
 
   template <typename A>
-  inline auto cons(A a) -> fn<array<A>, array<A>> {
-    return [=](array<A> l) {
+  inline auto cons(param<A> a) -> fn<array<A>, array<A>> {
+    return [=](const array<A>& l) {
       return array<A>(a,l);
     };
   }
 
   // STUB!!!
   template <typename A, typename B>
-  inline auto uncons_prime_(fn<Prelude::Unit,B> empty) {
-    return [=](fn<A,fn<array<A>,B>> next) {
-      return [=](array<A> xs) {
+  inline auto uncons_prime_(const fn<Prelude::Unit,B>& empty) {
+    return [=](const fn<A,fn<array<A>,B>>& next) {
+      return [=](const array<A>& xs) {
         return empty();
       };
     };
@@ -55,10 +55,10 @@ namespace Data_Array {
   //                                    -> Int
   //                                    -> Maybe a
   template <typename A>
-  const auto indexImpl = [](auto just) {
-    return [=](auto nothing) {
-      return [=](array<A> xs) {
-        return [=](int i) {
+  const auto indexImpl = [](const auto& just) {
+    return [=](const auto& nothing) {
+      return [=](const array<A>& xs) {
+        return [=](const int i) {
           return i < 0 || i >= xs.size() ? nothing(typeval<A>) : just(typeval<A>)(xs[i]);
         };
       };
@@ -72,7 +72,7 @@ namespace Data_Array {
   //                                        -> Maybe Int
   // STUB!!!
   template <typename A>
-  const auto findIndexImpl = [](auto just) {
+  const auto findIndexImpl = [](const auto& just) {
     return nullptr;
   };
 
@@ -83,7 +83,7 @@ namespace Data_Array {
   //                                            -> Maybe Int
   // STUB!!!
   template <typename A>
-  const auto findLastIndexImpl = [](auto just) {
+  const auto findLastIndexImpl = [](const auto& just) {
     return nullptr;
   };
 
@@ -100,7 +100,7 @@ namespace Data_Array {
   //                                    -> Maybe (Array a)
   // STUB!!!
   template <typename A>
-  const auto _updateAt = [](auto just) {
+  const auto _updateAt = [](const auto& just) {
     return nullptr;
   };
 
@@ -112,15 +112,15 @@ namespace Data_Array {
   //                                    -> Maybe (Array a)
   // STUB!!!
   template <typename A>
-  const auto _insertAt = [](auto just) {
+  const auto _insertAt = [](const auto& just) {
     return nullptr;
   };
 
   // STUB!!!
   template <typename A>
-  inline auto _deleteAt(int i) {
-    return [=](int n) {
-      return [=](array<A> l) {
+  inline auto _deleteAt(const int i) {
+    return [=](const int n) {
+      return [=](const array<A>& l) {
         return array<A>();
       };
     };
@@ -128,23 +128,23 @@ namespace Data_Array {
 
   // STUB!!!
   template <typename A>
-  inline auto reverse(array<A> l) {
+  inline auto reverse(const array<A>& l) {
     return array<A>();
   }
 
   // STUB!!!
   template <typename A>
-  inline auto filter(fn<A,bool> f) {
-    return [=](array<A> xs) {
+  inline auto filter(const fn<A,bool>& f) {
+    return [=](const array<A>& xs) {
       return array<A>();
     };
   }
 
   // STUB!!!
   template <typename A>
-  inline auto slice(int s) {
-    return [=](int e) {
-      return [=](array<A> l) {
+  inline auto slice(const int s) {
+    return [=](const int e) {
+      return [=](const array<A>& l) {
         return array<A>();
       };
     };
@@ -152,17 +152,17 @@ namespace Data_Array {
 
   // STUB!!!
   template <typename A>
-  inline auto sortImpl(fn<A,fn<A,int>> f) {
-    return [=](array<A> l) {
+  inline auto sortImpl(const fn<A,fn<A,int>>& f) {
+    return [=](const array<A>& l) {
       return array<A>();
     };
   }
 
   // STUB!!!
   template <typename A, typename B, typename C>
-  inline auto zipWith(fn<A,fn<B,C>> f)  {
-    return [=](array<A> xs) {
-      return [=](array<B> ys) {
+  inline auto zipWith(const fn<A,fn<B,C>>& f)  {
+    return [=](const array<A>& xs) {
+      return [=](const array<B>& ys) {
         return array<C>();
       };
     };

@@ -31,10 +31,10 @@ namespace Data_Array_ST {
   // foreign import peekSTArrayImpl :: forall a h e r. (a -> r) -> r -> (STArray h a) -> Int -> (Eff (st :: ST h | e) r)
   //
   template <typename A, typename H, typename R>
-  const auto peekSTArrayImpl = [](auto just) {
-    return [=](auto nothing) {
-      return [=](STArray<H,A> xs) {
-        return [=](int i) {
+  const auto peekSTArrayImpl = [](const auto just) {
+    return [=](const auto nothing) {
+      return [=](const STArray<H,A>& xs) {
+        return [=](const int i) {
           return [=]() -> R {
             return i >= 0 && i < xs.size() ? just(typeval<A>)(xs[i]) : nothing(typeval<A>);
           };
@@ -47,8 +47,8 @@ namespace Data_Array_ST {
   // foreign import pushAllSTArray :: forall a h r. STArray h a -> Array a -> Eff (st :: ST h | r) Int
   //
   template <typename A, typename H>
-  inline auto pushAllSTArray(STArray<H,A> xs) {
-    return [=](array<A> as) {
+  inline auto pushAllSTArray(const STArray<H,A>& xs) {
+    return [=](const array<A>& as) {
       return [=]() -> int {
         xs.insert(xs.end(), as.begin(), as.end());
         return xs.size();
@@ -59,7 +59,7 @@ namespace Data_Array_ST {
   // foreign import copyImpl :: forall a b h r. a -> Eff (st :: ST h | r) b
   //
   template <typename A, typename B>
-  inline auto copyImpl(A xs) {
+  inline auto copyImpl(param<A> xs) {
     return [=]() -> B {
       return A(xs);
     };
