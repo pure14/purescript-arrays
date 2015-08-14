@@ -15,7 +15,7 @@
 #ifndef Data_Array_ST_FFI_HH
 #define Data_Array_ST_FFI_HH
 
-#include "Purescript/Purescript.hh"
+#include "PureScript/PureScript.hh"
 
 namespace Data_Array_ST {
   using namespace PureScript;

@@ -15,7 +15,7 @@
 #ifndef Data_Array_Unsafe_FFI_HH
 #define Data_Array_Unsafe_FFI_HH
 
-#include "Purescript/Purescript.hh"
+#include "PureScript/PureScript.hh"
 
 namespace Data_Array_Unsafe {
   using namespace PureScript;
