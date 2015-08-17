@@ -55,11 +55,11 @@ namespace Data_Array {
   //                                    -> Int
   //                                    -> Maybe a
   template <typename A>
-  const auto indexImpl = [](const auto& just) {
-    return [=](const auto& nothing) {
+  const auto indexImpl(const fn<A,Data_Maybe::Maybe<A>>& just) {
+    return [=](const Data_Maybe::Maybe<A>& nothing) {
       return [=](const array<A>& xs) {
         return [=](const int i) {
-          return i < 0 || i >= xs.size() ? nothing(typeval<A>) : just(typeval<A>)(xs[i]);
+          return i < 0 || i >= xs.size() ? nothing : just(xs[i]);
         };
       };
     };
