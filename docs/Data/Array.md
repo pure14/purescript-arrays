@@ -170,7 +170,20 @@ Running time: `O(n)` where `n` is the length of the array
 uncons :: forall a. Array a -> Maybe { head :: a, tail :: Array a }
 ```
 
-Break an array into its first element, and the remaining elements
+Break an array into its first element and remaining elements.
+
+Using `uncons` provides a way of writing code that would use cons patterns
+in Haskell or pre-PureScript 0.7:
+``` purescript
+f (x : xs) = something
+f [] = somethingElse
+```
+Becomes:
+``` purescript
+f arr = case uncons arr of
+  Just { head: x, tail: xs } -> something
+  Nothing -> somethingElse
+```
 
 #### `index`
 
@@ -440,6 +453,8 @@ specified equivalence relation to detemine equality.
 nub :: forall a. (Eq a) => Array a -> Array a
 ```
 
+Special case of `nubBy`: `nubBy eq`
+
 #### `nubBy`
 
 ``` purescript
@@ -447,7 +462,8 @@ nubBy :: forall a. (a -> a -> Boolean) -> Array a -> Array a
 ```
 
 Remove the duplicates from an array, where element equality is determined
-by the specified equivalence relation, creating a new array.
+by the specified equivalence relation, creating a new array. The first
+occurence of an element is always the one that is kept.
 
 #### `union`
 
@@ -553,5 +569,3 @@ second components.
 ``` purescript
 foldM :: forall m a b. (Monad m) => (a -> b -> m a) -> a -> Array b -> m a
 ```
-
-

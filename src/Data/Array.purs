@@ -115,10 +115,8 @@ foreign import replicate :: forall a. Int -> a -> Array a
 
 -- | Perform a monadic action `n` times collecting all of the results.
 replicateM :: forall m a. (Monad m) => Int -> m a -> m (Array a)
-replicateM n m | n < 1 = return []
-               | otherwise = do a <- m
-                                as <- replicateM (n - 1) m
-                                return (a : as)
+replicateM n m | n < 1     = return []
+               | otherwise = sequence $ replicate n m
 
 -- | Attempt a computation multiple times, requiring at least one success.
 -- |
@@ -210,7 +208,20 @@ init :: forall a. Array a -> Maybe (Array a)
 init xs | null xs = Nothing
         | otherwise = Just (slice zero (length xs - one) xs)
 
--- | Break an array into its first element, and the remaining elements
+-- | Break an array into its first element and remaining elements.
+-- |
+-- | Using `uncons` provides a way of writing code that would use cons patterns
+-- | in Haskell or pre-PureScript 0.7:
+-- | ``` purescript
+-- | f (x : xs) = something
+-- | f [] = somethingElse
+-- | ```
+-- | Becomes:
+-- | ``` purescript
+-- | f arr = case uncons arr of
+-- |   Just { head: x, tail: xs } -> something
+-- |   Nothing -> somethingElse
+-- | ```
 uncons :: forall a. Array a -> Maybe { head :: a, tail :: Array a }
 uncons = uncons' (const Nothing) \x xs -> Just { head: x, tail: xs }
 
@@ -447,10 +458,10 @@ groupBy :: forall a. (a -> a -> Boolean) -> Array a -> Array (Array a)
 groupBy op = go []
   where
   go :: Array (Array a) -> Array a -> Array (Array a)
-  go acc []     = reverse acc
   go acc xs = case uncons xs of
-                Just o -> let sp = span (op o.head) o.tail
-                          in go ((o.head : sp.init) : acc) sp.rest
+    Just o -> let sp = span (op o.head) o.tail
+              in go ((o.head : sp.init) : acc) sp.rest
+    Nothing -> reverse acc
 
 --------------------------------------------------------------------------------
 -- Set-like operations ---------------------------------------------------------
@@ -463,9 +474,9 @@ nub = nubBy eq
 -- | Remove the duplicates from an array, where element equality is determined
 -- | by the specified equivalence relation, creating a new array.
 nubBy :: forall a. (a -> a -> Boolean) -> Array a -> Array a
-nubBy _ [] = []
 nubBy eq xs = case uncons xs of
                 Just o -> o.head : nubBy eq (filter (\y -> not (o.head `eq` y)) o.tail)
+                Nothing -> []
 
 -- | Calculate the union of two lists.
 -- |
