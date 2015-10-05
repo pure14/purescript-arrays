@@ -59,7 +59,7 @@ namespace Data_Array {
   inline auto cons(const any& e) -> any {
     return [=](const any& l_) {
       const auto& l = l_.cast<any::vector>();
-      any::vector xs(e);
+      any::vector xs(1, e);
       xs.insert(xs.end(), l.begin(), l.end());
       return xs;
     };
