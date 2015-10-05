@@ -25,20 +25,27 @@ namespace Data_Array {
   // Array creation --------------------------------------------------------------
   //------------------------------------------------------------------------------
 
-  inline auto range(const any& start) -> any {
-    return [=](const any& end) -> any {
+  inline auto range(const any& start_) -> any {
+    return [=](const any& end_) -> any {
+      const auto start = start_.cast<long>();
+      const auto end = end_.cast<long>();
+      const auto step = start > end ? -1L : 1L;
       any::vector ns;
-      for (auto i = start.cast<long>(); i <= end; i++ ) {
+      for (auto i = start; i != end; i += step) {
         ns.push_back(i);
       }
+      ns.push_back(end);
       return ns;
     };
   }
 
-  inline auto replicate(const any& n) -> any {
+  inline auto replicate(const any& n_) -> any {
     return [=](const any& v) -> any {
+      const auto n = n_.cast<long>();
       any::vector vs;
-      vs.insert(vs.begin(), n.cast<long>(), v);
+      if (n > 0L) {
+        vs.insert(vs.begin(), n, v);
+      }
       return vs;
     };
   }
@@ -252,6 +259,14 @@ namespace Data_Array {
         const auto& xs = xs_.cast<any::vector>();
         return any::vector(xs.begin() + start.cast<long>(), xs.begin() + end.cast<long>() + 1);
       };
+    };
+  }
+
+  inline auto drop(const any& n) -> any {
+    return [=](const any& xs_) -> any {
+      const auto& xs = xs_.cast<any::vector>();
+      assert(n >= 0L && "Negative values not supported");
+      return any::vector(xs.cbegin() + n.cast<long>(), xs.cend());
     };
   }
 
