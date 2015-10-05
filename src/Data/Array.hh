@@ -47,8 +47,8 @@ namespace Data_Array {
   // Array size ------------------------------------------------------------------
   //------------------------------------------------------------------------------
 
-  constexpr auto length(const any& xs) {
-    return xs.cast<any::vector>().size();
+  inline auto length(const any& xs) -> any {
+    return static_cast<long>(xs.cast<any::vector>().size());
   }
 
 
