@@ -20,50 +20,98 @@
 namespace Data_Array_ST {
   using namespace PureScript;
 
-  // | A reference to a mutable array.
-  // |
-  // | The first type parameter represents the memory region which the array belongs to.
-  // | The second type parameter defines the type of elements of the mutable array.
-  // |
-  template <typename H, typename A>
-  using STArray = std::vector<A>;
+  using STArray = std::vector<any>;
 
-  // foreign import peekSTArrayImpl :: forall a h e r. (a -> r) -> r -> (STArray h a) -> Int -> (Eff (st :: ST h | e) r)
-  //
-  template <typename A, typename H, typename R>
-  const auto peekSTArrayImpl = [](const auto just) {
-    return [=](const auto nothing) {
-      return [=](const STArray<H,A>& xs) {
-        return [=](const int i) {
-          return [=]() -> R {
-            return i >= 0 && i < xs.size() ? just(typeval<A>)(xs[i]) : nothing(typeval<A>);
+  inline auto runSTArray(const any& f) {
+    return f;
+  }
+
+  inline auto emptySTArray() -> any {
+    return STArray();
+  }
+
+  inline auto peekSTArrayImpl(const any& just) -> any {
+    return [=](const any& nothing) -> any {
+      return [=](const any& xs_) -> any {
+        return [=](const any& i_) -> any {
+          return [=]() -> any {
+            const auto& xs = xs_.cast<STArray>();
+            const auto i = i_.cast<long>();
+            return i >= 0L && i < xs.size() ? just(xs[i]) : nothing;
           };
         };
       };
     };
-  };
+  }
 
-  // | Append the values in an immutable array to the end of a mutable array.
-  // foreign import pushAllSTArray :: forall a h r. STArray h a -> Array a -> Eff (st :: ST h | r) Int
-  //
-  template <typename A, typename H>
-  inline auto pushAllSTArray(const STArray<H,A>& xs) {
-    return [=](const array<A>& as) {
-      return [=]() -> int {
-        xs.insert(xs.end(), as.begin(), as.end());
-        return xs.size();
+  inline auto pokeSTArray(const any& xs_) -> any {
+    return [=](const any& i_) -> any {
+      return [=](const any& a) -> any {
+        return [=]() -> any {
+          auto& xs = const_cast<STArray&>(xs_.cast<STArray>());
+          const auto i = i_.cast<long>();
+          const bool ret = i >= 0 && i < xs.size();
+          if (ret){
+            xs[i] = a;
+          }
+          return ret;
+        };
       };
     };
   }
 
-  // foreign import copyImpl :: forall a b h r. a -> Eff (st :: ST h | r) b
-  //
-  template <typename A, typename B>
-  inline auto copyImpl(param<A> xs) {
-    return [=]() -> B {
-      return A(xs);
+  inline auto pushAllSTArray(const any& xs_) -> any {
+    return [=](const any& as_) -> any {
+      return [=]() -> any {
+        auto& xs = const_cast<STArray&>(xs_.cast<STArray>());
+        const auto& as = as_.cast<any::vector>();
+        xs.insert(xs.end(), as.begin(), as.end());
+        return static_cast<long>(xs.size());
+      };
     };
   }
+
+  inline auto spliceSTArray(const any& xs_) -> any {
+    return [=](const any& i_) -> any {
+      return [=](const any& howMany_) -> any {
+        return [=](const any& bs_) -> any {
+          return [=]() -> any {
+            auto& xs = const_cast<STArray&>(xs_.cast<STArray>());
+            const auto i = i_.cast<long>();
+            if (i < 0) {
+              throw runtime_error("Negative index not supported yet");
+            }
+            const auto howMany = howMany_.cast<long>();
+            const auto& bs = bs_.cast<any::vector>();
+            if (howMany > 0) {
+              xs.erase(xs.begin() + i, xs.begin() + i + howMany);
+            }
+            xs.insert(xs.begin() + i, bs.begin(), bs.end());
+            return xs;
+          };
+        };
+      };
+    };
+  }
+
+  inline auto copyImpl(const any& xs) -> any {
+    return [=]() -> any {
+      return any::vector(xs.cast<STArray>());
+    };
+  }
+
+  inline auto toAssocArray(const any& xs_) -> any {
+    return [=]() -> any {
+      const auto& xs = xs_.cast<STArray>();
+      const auto n = xs.size();
+      any::vector as;
+      for (auto i = 0L; i < n; i++) {
+        as.push_back( any::map { { "value"_key, xs[i] }, { "index"_key, i } } );
+      }
+      return as;
+    };
+  }
+
 }
 
 

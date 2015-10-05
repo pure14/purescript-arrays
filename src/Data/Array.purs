@@ -239,8 +239,8 @@ foreign import uncons' :: forall a b. (Unit -> b)
 index :: forall a. Array a -> Int -> Maybe a
 index = indexImpl Just Nothing
 
-foreign import indexImpl :: forall a. (a -> Maybe a)
-                                   -> (Maybe a)
+foreign import indexImpl :: forall a. (forall r. r -> Maybe r)
+                                   -> (forall r. Maybe r)
                                    -> Array a
                                    -> Int
                                    -> Maybe a
@@ -263,8 +263,8 @@ elemLastIndex x = findLastIndex (== x)
 findIndex :: forall a. (a -> Boolean) -> Array a -> Maybe Int
 findIndex = findIndexImpl Just Nothing
 
-foreign import findIndexImpl :: forall a. (a -> Maybe a)
-                                       -> (Maybe a)
+foreign import findIndexImpl :: forall a. (forall b. b -> Maybe b)
+                                       -> (forall b. Maybe b)
                                        -> (a -> Boolean)
                                        -> Array a
                                        -> Maybe Int
@@ -273,8 +273,8 @@ foreign import findIndexImpl :: forall a. (a -> Maybe a)
 findLastIndex :: forall a. (a -> Boolean) -> Array a -> Maybe Int
 findLastIndex = findLastIndexImpl Just Nothing
 
-foreign import findLastIndexImpl :: forall a. (a -> Maybe a)
-                                           -> (Maybe a)
+foreign import findLastIndexImpl :: forall a. (forall b. b -> Maybe b)
+                                           -> (forall b. Maybe b)
                                            -> (a -> Boolean)
                                            -> Array a
                                            -> Maybe Int
@@ -284,8 +284,8 @@ foreign import findLastIndexImpl :: forall a. (a -> Maybe a)
 insertAt :: forall a. Int -> a -> Array a -> Maybe (Array a)
 insertAt = _insertAt Just Nothing
 
-foreign import _insertAt :: forall a. (a -> Maybe a)
-                                   -> (Maybe a)
+foreign import _insertAt :: forall a. (forall b. b -> Maybe b)
+                                   -> (forall b. Maybe b)
                                    -> Int
                                    -> a
                                    -> Array a
@@ -296,8 +296,8 @@ foreign import _insertAt :: forall a. (a -> Maybe a)
 deleteAt :: forall a. Int -> Array a -> Maybe (Array a)
 deleteAt = _deleteAt Just Nothing
 
-foreign import _deleteAt :: forall a. (a -> Maybe a)
-                                   -> (Maybe a)
+foreign import _deleteAt :: forall a. (forall b. b -> Maybe b)
+                                   -> (forall b. Maybe b)
                                    -> Int
                                    -> Array a
                                    -> Maybe (Array a)
@@ -307,8 +307,8 @@ foreign import _deleteAt :: forall a. (a -> Maybe a)
 updateAt :: forall a. Int -> a -> Array a -> Maybe (Array a)
 updateAt = _updateAt Just Nothing
 
-foreign import _updateAt :: forall a. (a -> Maybe a)
-                                   -> (Maybe a)
+foreign import _updateAt :: forall a. (forall b. b -> Maybe b)
+                                   -> (forall b. Maybe b)
                                    -> Int
                                    -> a
                                    -> Array a

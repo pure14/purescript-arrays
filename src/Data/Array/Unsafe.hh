@@ -20,9 +20,8 @@
 namespace Data_Array_Unsafe {
   using namespace PureScript;
 
-  template <typename A>
-  inline auto unsafeIndex(const array<A>& xs) {
-    return [=](const int n) {
+  inline auto unsafeIndex(const any& xs) {
+    return [=](const any& n) {
       return xs[n];
     };
   }
