@@ -5,7 +5,7 @@
 module Data.Array.ST
   ( STArray(..)
   , Assoc()
-  -- , runSTArray
+  , runSTArray
   , emptySTArray
   , peekSTArray
   , pokeSTArray
@@ -37,7 +37,7 @@ type Assoc a = { value :: a, index :: Int }
 -- | `runST` to freeze a mutable reference.
 -- |
 -- | The rank-2 type prevents the reference from escaping the scope of `runSTArray`.
--- foreign import runSTArray :: forall a r. (forall h. Eff (st :: ST h | r) (STArray h a)) -> Eff r (Array a)
+foreign import runSTArray :: forall a r. (forall h. Eff (st :: ST h | r) (STArray h a)) -> Eff r (Array a)
 
 -- | Create an empty mutable array.
 foreign import emptySTArray :: forall a h r. Eff (st :: ST h | r) (STArray h a)
