@@ -115,9 +115,10 @@ namespace Data_Array {
       return [=](const any& f) -> any {
         return [=](const any& xs_) -> any {
           const auto& xs = xs_.cast<any::vector>();
-          for (any::vector::const_iterator it = xs.begin(); it != xs.end(); ++it) {
-            if (f(*it)) {
-              return just(*it);
+          const auto length = xs.size();
+          for (auto i = 0L; i < length; i++) {
+            if (f(xs[i])) {
+              return just(i);
             }
           }
           return nothing;
@@ -131,9 +132,10 @@ namespace Data_Array {
       return [=](const any& f) -> any {
         return [=](const any& xs_) -> any {
           const auto& xs = xs_.cast<any::vector>();
-          for (any::vector::const_reverse_iterator it = xs.rbegin(); it != xs.rend(); ++it) {
-            if (f(*it)) {
-              return just(*it);
+          const auto length = xs.size();
+          for (long i = length - 1; i >= 0L; i--) {
+            if (f(xs[i])) {
+              return just(i);
             }
           }
           return nothing;
