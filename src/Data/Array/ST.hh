@@ -106,7 +106,7 @@ namespace Data_Array_ST {
       const auto n = xs.size();
       any::vector as;
       for (auto i = 0L; i < n; i++) {
-        as.push_back( any::map { { "value"_key, xs[i] }, { "index"_key, i } } );
+        as.push_back( any::map { { KEY("value"), xs[i] }, { KEY("index"), i } } );
       }
       return as;
     };
