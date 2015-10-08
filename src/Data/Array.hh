@@ -246,7 +246,7 @@ namespace Data_Array {
       const auto& xs = xs_.cast<any::vector>();
       any::vector result(xs);
       std::sort(result.begin(), result.end(),
-                [f](const any& x, const any& y) { return (f(x)(y)) > 0L; } );
+                [f](const any& x, const any& y) { return (f(x)(y)) < 0L; } );
       return result;
     };
   }
@@ -259,16 +259,20 @@ namespace Data_Array {
     return [=](const any& end) -> any {
       return [=](const any& xs_) -> any {
         const auto& xs = xs_.cast<any::vector>();
-        return any::vector(xs.begin() + start.cast<long>(), xs.begin() + end.cast<long>());
+        const long length = xs.size();
+        const auto _start = std::min(start.cast<long>(), length);
+        const auto _end   = std::min(end.cast<long>(), length);
+        return any::vector(xs.begin() + _start, xs.begin() + _end);
       };
     };
   }
 
-  inline auto drop(const any& n) -> any {
+  inline auto drop(const any& n_) -> any {
     return [=](const any& xs_) -> any {
+      const auto n = n_.cast<long>();
       const auto& xs = xs_.cast<any::vector>();
       assert(n >= 0L && "Negative values not supported");
-      return any::vector(xs.cbegin() + n.cast<long>(), xs.cend());
+      return n >= xs.size() ? any::vector() : any::vector(xs.cbegin() + n, xs.cend());
     };
   }
 
