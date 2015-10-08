@@ -83,11 +83,13 @@ namespace Data_Array_ST {
             }
             const auto howMany = howMany_.cast<long>();
             const auto& bs = bs_.cast<any::vector>();
+            any::vector removed;
             if (howMany > 0) {
+              removed.insert(removed.begin(), xs.begin() + i, xs.begin() + i + howMany);
               xs.erase(xs.begin() + i, xs.begin() + i + howMany);
             }
             xs.insert(xs.begin() + i, bs.begin(), bs.end());
-            return xs;
+            return removed;
           };
         };
       };
