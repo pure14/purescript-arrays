@@ -259,7 +259,7 @@ namespace Data_Array {
     return [=](const any& end) -> any {
       return [=](const any& xs_) -> any {
         const auto& xs = xs_.cast<any::vector>();
-        return any::vector(xs.begin() + start.cast<long>(), xs.begin() + end.cast<long>() + 1);
+        return any::vector(xs.begin() + start.cast<long>(), xs.begin() + end.cast<long>());
       };
     };
   }
