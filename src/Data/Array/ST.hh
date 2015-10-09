@@ -22,7 +22,7 @@ namespace Data_Array_ST {
 
   using STArray = std::vector<any>;
 
-  inline auto runSTArray(const any& f) {
+  inline auto runSTArray(const any& f) -> any {
     return f;
   }
 

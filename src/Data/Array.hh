@@ -64,7 +64,7 @@ namespace Data_Array {
   //------------------------------------------------------------------------------
 
   inline auto cons(const any& e) -> any {
-    return [=](const any& l_) {
+    return [=](const any& l_) -> any {
       const auto& l = l_.cast<any::vector>();
       any::vector xs(1, e);
       xs.insert(xs.end(), l.begin(), l.end());
@@ -73,7 +73,7 @@ namespace Data_Array {
   }
 
   inline auto snoc(const any& l_) -> any {
-    return [=](const any& e) {
+    return [=](const any& e) -> any {
       const auto& l = l_.cast<any::vector>();
       any::vector xs(l);
       xs.push_back(e);
@@ -85,9 +85,9 @@ namespace Data_Array {
   // Non-indexed reads -----------------------------------------------------------
   //------------------------------------------------------------------------------
 
-  inline auto uncons_prime_(const any& empty) {
-    return [=](const any& next) {
-      return [=](const any& xs_) {
+  inline auto uncons_prime_(const any& empty) -> any {
+    return [=](const any& next) -> any {
+      return [=](const any& xs_) -> any {
         const auto& xs = xs_.cast<any::vector>();
         return xs.empty() ? empty() : next(xs.front())(any::vector(xs.begin() + 1, xs.end()));
       };
